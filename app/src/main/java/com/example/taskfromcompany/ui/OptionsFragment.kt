@@ -1,5 +1,6 @@
 package com.example.taskfromcompany.ui
 
+import android.content.Intent
 import android.graphics.*
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.taskfromcompany.R
+import com.example.taskfromcompany.util.TempDataStorage
 import com.example.taskfromcompany.viewmodel.InformationViewModel
 
 class OptionsFragment : Fragment() {
@@ -106,14 +108,14 @@ class OptionsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.log_out) {
-            Toast.makeText(requireActivity(), "Log out has been selected", Toast.LENGTH_LONG).show()
+            TempDataStorage.saveUser(null)
+            Intent(requireActivity(),LoginActivity::class.java).also {
+                startActivity(it)
+            }
             return true
         }
         return false
     }
-
-
-
 
 
 }

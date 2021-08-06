@@ -24,8 +24,15 @@ class LoginActivity : AppCompatActivity() {
         TempDataStorage.initializeSharedPreferences(this)
         loginViewModel = ViewModelProvider(this).get(LoginPageViewModel::class.java)
 
-        binding.appCompatButton.setOnClickListener {
-            loginViewModel.getApiTokenRest(20234561, "ladevi31")
+        val user = TempDataStorage.getCurUser()
+        if (user != null) {
+            Intent(this, MenuActivity::class.java).also {
+                startActivity(it)
+            }
+        } else {
+            binding.appCompatButton.setOnClickListener {
+                loginViewModel.getApiTokenRest(20234561, "ladevi31")
+            }
         }
 
         loginViewModel.returnLiveDataUserLoginIn().observe(this) {
@@ -39,8 +46,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
-
-
 
 
 }

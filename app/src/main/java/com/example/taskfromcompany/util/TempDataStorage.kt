@@ -17,7 +17,13 @@ object TempDataStorage {
         share = context.getSharedPreferences("fake_db", Context.MODE_PRIVATE)
     }
 
-    fun saveUser(user: User) = share.edit().putString("user", gson.toJson(user)).apply()
+    fun saveUser(user: User?) {
+        if (user == null) {
+            share.edit().clear().apply()
+            return
+        }
+        share.edit().putString("user", gson.toJson(user)).apply()
+    }
 
     fun getCurUser(): User? {
         val user_str = share.getString("user", null) ?: return null
