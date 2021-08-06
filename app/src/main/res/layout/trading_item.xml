@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+
+            <TextView
+                android:id="@+id/txtactualTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time:"
+                android:textColor="#4E4949" />
+
+            <TextView
+                android:id="@+id/txtActualTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtactualTime"
+                android:layout_toRightOf="@+id/txtactualTime"
+                android:text="20.20.2012" />
+
+            <TextView
+                android:id="@+id/txtprice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_toEndOf="@+id/txtActualTime"
+                android:layout_toRightOf="@+id/txtActualTime"
+                android:text="Price:"
+                android:textColor="#4E4949" />
+
+            <TextView
+                android:id="@+id/txtPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_toEndOf="@+id/txtprice"
+                android:layout_toRightOf="@+id/txtprice"
+                android:text="20.33" />
+
+            <TextView
+                android:id="@+id/txtpair"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_toRightOf="@+id/txtPrice"
+                android:text="Pair:"
+                android:textColor="#4E4949" />
+
+            <TextView
+                android:id="@+id/txtPair"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtpair"
+                android:layout_toRightOf="@+id/txtpair"
+                android:text="AUDUSD" />
+
+            <TextView
+                android:id="@+id/txtcomment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtactualTime"
+                android:layout_marginTop="5dp"
+                android:text="Comment:"
+                android:textColor="#4E4949" />
+
+            <TextView
+                android:id="@+id/txtComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtactualTime"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/txtcomment"
+                android:layout_toRightOf="@+id/txtcomment"
+                android:text="Trend Channel" />
+
+            <TextView
+                android:id="@+id/txtsl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtprice"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/txtComment"
+                android:layout_toRightOf="@+id/txtComment"
+                android:text="Sl:"
+                android:textColor="#4E4949" />
+
+            <TextView
+                android:id="@+id/txtSl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtPrice"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/txtsl"
+                android:layout_toRightOf="@+id/txtsl"
+                android:text="0.88" />
+
+            <TextView
+                android:id="@+id/txttp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtpair"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/txtSl"
+                android:layout_toRightOf="@+id/txtSl"
+                android:text="Tp:"
+                android:textColor="#4E4949" />
+
+            <TextView
+                android:id="@+id/txtTp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtpair"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/txttp"
+                android:text="8.32" />
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

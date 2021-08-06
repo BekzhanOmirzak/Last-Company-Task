@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Task from Company</string>
+    <array name="currencies">
+        <item>EURUSD</item>
+        <item>GBPUSD</item>
+        <item>USDJPY</item>
+        <item>USDCHF</item>
+        <item>USDCAD</item>
+        <item>AUDUSD</item>
+        <item>NZDUSD</item>
+    </array>
+    <string-array name="initial_slider_value">
+        <item>809232232</item>
+        <item>1326433232</item>
+    </string-array>
+</resources>

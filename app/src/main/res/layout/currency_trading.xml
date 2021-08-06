@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/tool_bar"
+        android:padding="5dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txtpaircurrency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose pair of currency:"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtpaircurrency"
+            android:entries="@array/currencies" />
+
+        <TextView
+            android:id="@+id/txtchosedaterange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinner"
+            android:layout_marginTop="5dp"
+            android:text="Choose date range:"
+            android:textSize="20sp" />
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/rangeSlider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtchosedaterange"
+            android:valueFrom="0"
+            app:labelBehavior="withinBounds"
+            app:values="@array/initial_slider_value" />
+
+
+        <TextView
+            android:id="@+id/txtfrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rangeSlider"
+            android:text="From:"
+            android:textColor="#4E4949"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txtFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rangeSlider"
+            android:layout_toEndOf="@+id/txtfrom"
+            android:layout_toRightOf="@+id/txtfrom"
+            android:text="10.01.2012"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txtto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rangeSlider"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/txtFrom"
+            android:layout_toRightOf="@+id/txtFrom"
+            android:text="To:"
+            android:textColor="#4E4949"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txtTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rangeSlider"
+            android:layout_toEndOf="@+id/txtto"
+            android:layout_toRightOf="@+id/txtto"
+            android:text="10.01.2012"
+            android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtfrom"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/custom_background"
+            android:paddingLeft="60dp"
+            android:paddingRight="60dp"
+            android:text="Search"
+            android:textAllCaps="false"
+            android:textColor="#0D33FB"
+            android:textSize="15sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/btnSearch"
+            android:layout_marginTop="10dp" />
+    </RelativeLayout>
+
+</RelativeLayout>
