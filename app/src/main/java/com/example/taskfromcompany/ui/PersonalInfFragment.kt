@@ -71,6 +71,9 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
         showLinearLayout.visibility = View.GONE
         tool_bar = view.findViewById(R.id.tool_bar)
         tool_bar.title = ""
+
+        Log.i(TAG, "initProperties PersonalFragment: ${personalViewModel.hashCode()}")
+
     }
 
     private fun initToolBar() {
@@ -83,7 +86,8 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
 
         tool_bar.setNavigationOnClickListener {
             myOnBackPressed.myOnBackPressed(true)
-            (activity as AppCompatActivity).supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.pop_enter,R.anim.pop_exit)
+            (activity as AppCompatActivity).supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.pop_enter, R.anim.pop_exit)
                 .replace(R.id.container, OptionsFragment()).commit()
         }
 
