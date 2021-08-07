@@ -1,6 +1,5 @@
 package com.example.taskfromcompany.viewmodel
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,8 +10,10 @@ import com.example.taskfromcompany.model.PersonalInformation
 import com.example.taskfromcompany.remote.ServiceGenerator
 import com.example.taskfromcompany.util.Resource
 import com.example.taskfromcompany.util.TempDataStorage
-import kotlinx.coroutines.*
-import java.lang.Exception
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class InformationViewModel : ViewModel() {
 
@@ -24,7 +25,6 @@ class InformationViewModel : ViewModel() {
     private val liveDataListCurrencyTrading = MutableLiveData<Resource<List<CurrencyTrading>>>()
     private var job: Job? = null
     var fragment: Fragment? = null
-
 
     fun returnPersonalInformation(): LiveData<Resource<PersonalInformation>> {
         return liveDataUserInformation
@@ -90,7 +90,11 @@ class InformationViewModel : ViewModel() {
             }
 
         }
+
     }
+
+
+
 
 
 }

@@ -18,8 +18,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.taskfromcompany.R
 import com.example.taskfromcompany.databinding.ActivityLoginBinding
 import com.example.taskfromcompany.remote.ConnectionLiveData
+import com.example.taskfromcompany.util.Resource
 import com.example.taskfromcompany.util.TempDataStorage
 import com.example.taskfromcompany.viewmodel.LoginPageViewModel
+import java.lang.Exception
+import kotlin.math.log
 
 class LoginActivity : AppCompatActivity() {
 
@@ -42,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
         val user = TempDataStorage.getCurUser()
         if (user != null) {
             Intent(this, MenuActivity::class.java).also {
+                it.putExtra("old", "old")
                 startActivity(it)
             }
         }
@@ -51,13 +55,28 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginViewModel.returnLiveDataUserLoginIn().observe(this) {
-            if (it) {
-                Intent(this, MenuActivity::class.java).also {
-                    startActivity(it)
+
+            when (it) {
+                is Resource.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
                 }
-            } else {
-                Log.e(TAG, "onCreate: Error")
+
+                is Resource.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(
+                        this,
+                        "Please, check your email and password...",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                is Resource.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                    Intent(this, MenuActivity::class.java).also {
+                        startActivity(it)
+                    }
+                }
             }
+
         }
         initHandlingInternet()
         handlingColorForNotMember()
@@ -72,7 +91,6 @@ class LoginActivity : AppCompatActivity() {
         ss.setSpan(fcsBlue, 13, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.txtSignUp.text = ss
     }
-
 
     private fun initHandlingInternet() {
         connectionLiveData.observe(this) {
@@ -91,7 +109,29 @@ class LoginActivity : AppCompatActivity() {
                 .show()
             return
         }
-        loginViewModel.getApiTokenRest(20234561, "ladevi31")
+
+        val login = binding.edtLogin.text.toString()
+        val password = binding.edtPassword.text.toString()
+        if (login.trim().isEmpty()) {
+            binding.edtLogin.error = "Login can't be empty"
+            binding.edtLogin.requestFocus()
+            return
+        }
+        if (password.trim().isEmpty()) {
+            binding.edtPassword.error = "Password can't be empty"
+            binding.edtPassword.requestFocus()
+            return
+        }
+
+        try {
+            loginViewModel.getApiTokenRest(Integer.valueOf(login), password)
+        } catch (ex: Exception) {
+            Toast.makeText(
+                this,
+                "Please, check your email and password...",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
 

@@ -103,7 +103,6 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
                     progressBar.visibility = View.VISIBLE
                 }
 
-
             }
         }
     }
@@ -144,7 +143,6 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
         } catch (ex: ClassCastException) {
             Toast.makeText(requireActivity(), "Exception has occured...", Toast.LENGTH_LONG).show()
         }
-
 
     }
 

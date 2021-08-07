@@ -9,7 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.taskfromcompany.R
 import com.example.taskfromcompany.databinding.ActivityMenuBinding
 import com.example.taskfromcompany.remote.ConnectionLiveData
+import com.example.taskfromcompany.util.Resource
+import com.example.taskfromcompany.util.TempDataStorage
 import com.example.taskfromcompany.viewmodel.InformationViewModel
+import com.example.taskfromcompany.viewmodel.LoginPageViewModel
 import java.net.ConnectException
 
 class MenuActivity : AppCompatActivity(),
@@ -18,6 +21,7 @@ class MenuActivity : AppCompatActivity(),
     private val TAG = "Menu"
     private lateinit var binding: ActivityMenuBinding
     private lateinit var informationViewModel: InformationViewModel
+    private lateinit var loginPageViewModel: LoginPageViewModel
     private var pressed = false
     private lateinit var connectLiveData: ConnectionLiveData
     var hasInternet = false
@@ -28,11 +32,37 @@ class MenuActivity : AppCompatActivity(),
         connectLiveData = ConnectionLiveData(this)
         setContentView(binding.root)
         informationViewModel = ViewModelProvider(this).get(InformationViewModel::class.java)
+        loginPageViewModel = ViewModelProvider(this).get(LoginPageViewModel::class.java)
         Log.i(TAG, "onCreate: code: ${informationViewModel.hashCode()}")
         if (savedInstanceState == null) {
             showFragment(OptionsFragment())
         }
         initHandlingInternetConnection()
+        val value = intent.getStringExtra("old")
+        if (value != null) {
+            initHandlingToGetToken()
+        }
+
+    }
+
+    private fun initHandlingToGetToken() {
+        val user = TempDataStorage.getCurUser()!!
+        loginPageViewModel.getApiTokenRest(user.login, user.password)
+        loginPageViewModel.returnLiveDataUserLoginIn().observe(this) {
+            when (it) {
+
+                is Resource.Loading -> {
+                    binding.container.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+
+                is Resource.Success -> {
+                    binding.container.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.GONE
+                }
+
+            }
+        }
     }
 
     private fun initHandlingInternetConnection() {
@@ -55,7 +85,6 @@ class MenuActivity : AppCompatActivity(),
             .commit()
     }
 
-
     override fun onBackPressed() {
         if (pressed) {
             val transaction = supportFragmentManager.beginTransaction()
@@ -64,7 +93,9 @@ class MenuActivity : AppCompatActivity(),
                 .commit()
             pressed = false
         } else {
-            super.onBackPressed()
+            moveTaskToBack(true)
+            android.os.Process.killProcess(android.os.Process.myPid())
+            System.exit(1)
         }
     }
 
