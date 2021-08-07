@@ -2,29 +2,49 @@ package com.example.taskfromcompany.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.taskfromcompany.R
 import com.example.taskfromcompany.databinding.ActivityMenuBinding
+import com.example.taskfromcompany.remote.ConnectionLiveData
 import com.example.taskfromcompany.viewmodel.InformationViewModel
+import java.net.ConnectException
 
 class MenuActivity : AppCompatActivity(),
-PersonalInfFragment.MyOnBackPressed {
+    PersonalInfFragment.MyOnBackPressed {
 
     private val TAG = "Menu"
     private lateinit var binding: ActivityMenuBinding
     private lateinit var informationViewModel: InformationViewModel
     private var pressed = false
+    private lateinit var connectLiveData: ConnectionLiveData
+    var hasInternet = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMenuBinding.inflate(layoutInflater)
+        connectLiveData = ConnectionLiveData(this)
         setContentView(binding.root)
         informationViewModel = ViewModelProvider(this).get(InformationViewModel::class.java)
         Log.i(TAG, "onCreate: code: ${informationViewModel.hashCode()}")
         if (savedInstanceState == null) {
             showFragment(OptionsFragment())
+        }
+        initHandlingInternetConnection()
+    }
+
+    private fun initHandlingInternetConnection() {
+
+        connectLiveData.observe(this) {
+            hasInternet = it
+
+            if (it) {
+                binding.txtWarning.visibility = View.GONE
+            } else {
+                binding.txtWarning.visibility = View.VISIBLE
+            }
         }
 
     }

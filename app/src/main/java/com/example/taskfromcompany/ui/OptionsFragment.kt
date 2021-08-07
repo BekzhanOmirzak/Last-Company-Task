@@ -24,7 +24,6 @@ class OptionsFragment : Fragment() {
     private val TAG = "OptionsFragment"
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -76,15 +75,24 @@ class OptionsFragment : Fragment() {
             showNextFragment(TradingFragment())
         }
 
+
     }
 
     private fun showNextFragment(fragment: Fragment) {
+
+        if (!(activity as MenuActivity).hasInternet) {
+            Toast.makeText(
+                activity,
+                "Please, check your internet connection...",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
         val transaction = activity?.supportFragmentManager!!.beginTransaction()
         transaction.setCustomAnimations(R.anim.enter, R.anim.exit)
         transaction.replace(R.id.container, fragment).commit()
     }
-
-
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -95,7 +103,7 @@ class OptionsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.log_out) {
             TempDataStorage.saveUser(null)
-            Intent(requireActivity(),LoginActivity::class.java).also {
+            Intent(requireActivity(), LoginActivity::class.java).also {
                 startActivity(it)
             }
             return true

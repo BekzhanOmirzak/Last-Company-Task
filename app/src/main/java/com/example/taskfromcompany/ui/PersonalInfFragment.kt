@@ -30,13 +30,13 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
     private lateinit var tool_bar: Toolbar
     private val TAG = "PersonalInfFragment"
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initProperties(view)
         initToolBar()
         initObservingPersonalInformation()
         initBackButton()
+        if (savedInstanceState == null) personalViewModel.startRequesting()
     }
 
     private fun initObservingPersonalInformation() {
@@ -67,7 +67,6 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
         linearContainer = view.findViewById(R.id.parent_linear)
         showLinearLayout = view.findViewById(R.id.scroll_view)
         personalViewModel = ViewModelProvider(this).get(InformationViewModel::class.java)
-        personalViewModel.startRequesting()
         progressBar.visibility = View.VISIBLE
         showLinearLayout.visibility = View.GONE
         tool_bar = view.findViewById(R.id.tool_bar)
@@ -86,7 +85,7 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
     private fun initBackButton() {
 
         tool_bar.setNavigationOnClickListener {
-            myOnBackPressed.myOnBackPressed(true)
+            myOnBackPressed.myOnBackPressed(false)
             (activity as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.pop_enter, R.anim.pop_exit)
                 .replace(R.id.container, OptionsFragment()).commit()
@@ -99,7 +98,6 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
         } catch (ex: ClassCastException) {
             Toast.makeText(requireActivity(), "Exception has occured...", Toast.LENGTH_LONG).show()
         }
-
 
 
     }

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.taskfromcompany.model.CurrencyTrading
 import com.example.taskfromcompany.model.PersonalInformation
 import com.example.taskfromcompany.remote.ServiceGenerator
+import com.example.taskfromcompany.util.Resource
 import com.example.taskfromcompany.util.TempDataStorage
 import kotlinx.coroutines.*
 
@@ -19,17 +20,17 @@ class InformationViewModel : ViewModel() {
     val retrofitApiRest = ServiceGenerator.generateServiceRest()
     val retrofitApiUrl = ServiceGenerator.generateServiceUrl()
     private val liveDataUserInformation = MutableLiveData<PersonalInformation?>()
-    private val liveDataListCurrencyTranding = MutableLiveData<List<CurrencyTrading>?>()
+    private val liveDataListCurrencyTrading = MutableLiveData<Resource<List<CurrencyTrading>>>()
     private var job: Job? = null
-     var fragment: Fragment? = null
+    var fragment: Fragment? = null
 
 
     fun returnPersonalInformation(): LiveData<PersonalInformation?> {
         return liveDataUserInformation
     }
 
-    fun returnCurrentTrading(): LiveData<List<CurrencyTrading>?> {
-        return liveDataListCurrencyTranding
+    fun returnCurrentTrading(): LiveData<Resource<List<CurrencyTrading>>> {
+        return liveDataListCurrencyTrading
     }
 
     fun startRequesting() {
@@ -56,23 +57,19 @@ class InformationViewModel : ViewModel() {
     }
 
     fun startRequestingCurrency(pair: String, from: Int, to: Int) {
-        Log.i(TAG, "startRequestingCurrency: $pair   $from   $to ")
-        Log.i(TAG, "startRequestingCurrency: ${TempDataStorage.getCurUser()!!.urlToken}")
-        liveDataListCurrencyTranding.postValue(null)
+        liveDataListCurrencyTrading.postValue(Resource.Loading(null))
         val user = TempDataStorage.getCurUser()!!
         job = viewModelScope.launch {
-
             val responseUrl =
                 retrofitApiUrl.getCurrentTrading(user.urlToken, user.login, 3, pair, from, to)
             if (responseUrl.isSuccessful && responseUrl.code() == 200) {
                 withContext(Dispatchers.Main) {
-                    liveDataListCurrencyTranding.postValue(responseUrl.body())
-                    Log.i(TAG, "startRequestingCurrency: ${responseUrl.body()}")
+                    liveDataListCurrencyTrading.postValue(Resource.Success(responseUrl.body()!!))
                     job?.cancel();
                 }
             } else {
                 withContext(Dispatchers.Main) {
-                    liveDataListCurrencyTranding.postValue(null)
+                    liveDataListCurrencyTrading.postValue(Resource.Error("Failure"))
                     job?.cancel()
                 }
             }

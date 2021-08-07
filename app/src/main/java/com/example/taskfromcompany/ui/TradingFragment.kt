@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.taskfromcompany.R
 import com.example.taskfromcompany.adapter.TradingAdapter
+import com.example.taskfromcompany.util.Resource
 import com.example.taskfromcompany.viewmodel.InformationViewModel
 import com.google.android.material.slider.RangeSlider
 import java.lang.ClassCastException
@@ -103,6 +105,16 @@ class TradingFragment : Fragment(R.layout.currency_trading) {
     }
 
     private fun startSearchingCurrencyTrading() {
+
+        if (!(activity as MenuActivity).hasInternet) {
+            Toast.makeText(
+                activity,
+                "Please, check your internet connection...",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
         val pair = spinner.selectedItem.toString()
         informationViewModel.startRequestingCurrency(pair, from, to)
     }
@@ -122,18 +134,21 @@ class TradingFragment : Fragment(R.layout.currency_trading) {
         rec_view.adapter = adapter
         rec_view.layoutManager = LinearLayoutManager(requireActivity())
         informationViewModel.returnCurrentTrading().observe(this) {
-            if (it != null) {
-                adapter.updateTradingItems(it)
-            } else {
-                adapter.updateTradingItems(listOf())
+
+            when (it) {
+                is Resource.Error -> {
+
+                }
+                is Resource.Loading -> {
+
+                }
+                is Resource.Success -> {
+
+                }
             }
+
         }
     }
-
-
-
-
-
 
 
 }
