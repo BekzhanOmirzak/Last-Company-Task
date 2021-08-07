@@ -20,20 +20,15 @@ class OptionsFragment : Fragment() {
     private lateinit var btn_personal: AppCompatButton
     private lateinit var btn_trading: AppCompatButton
     private lateinit var informationViewModel: InformationViewModel
-    private lateinit var passFragment: PassFragment
     private lateinit var toolBar: androidx.appcompat.widget.Toolbar
     private val TAG = "OptionsFragment"
 
 
-    interface PassFragment {
-        fun onPassFragment(fragment: Fragment)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,12 +69,10 @@ class OptionsFragment : Fragment() {
 
 
         btn_personal.setOnClickListener {
-            passFragment(PersonalInfFragment())
             showNextFragment(PersonalInfFragment())
         }
 
         btn_trading.setOnClickListener {
-            passFragment(TradingFragment())
             showNextFragment(TradingFragment())
         }
 
@@ -92,14 +85,7 @@ class OptionsFragment : Fragment() {
     }
 
 
-    private fun passFragment(fragment: Fragment) {
-        try {
-            passFragment = activity as PassFragment
-            passFragment.onPassFragment(fragment)
-        } catch (ex: ClassCastException) {
 
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)

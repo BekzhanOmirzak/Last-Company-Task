@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.taskfromcompany.R
@@ -23,7 +24,7 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
 
     private lateinit var progressBar: ProgressBar
     private lateinit var linearContainer: LinearLayout
-    private lateinit var showLinearLayout: LinearLayout
+    private lateinit var showLinearLayout: NestedScrollView
     private lateinit var personalViewModel: InformationViewModel
     private lateinit var myOnBackPressed: MyOnBackPressed
     private lateinit var tool_bar: Toolbar
@@ -64,7 +65,7 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
     private fun initProperties(view: View) {
         progressBar = view.findViewById(R.id.progress_bar)
         linearContainer = view.findViewById(R.id.parent_linear)
-        showLinearLayout = view.findViewById(R.id.show_linear)
+        showLinearLayout = view.findViewById(R.id.scroll_view)
         personalViewModel = ViewModelProvider(this).get(InformationViewModel::class.java)
         personalViewModel.startRequesting()
         progressBar.visibility = View.VISIBLE
@@ -89,6 +90,7 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
             (activity as AppCompatActivity).supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.pop_enter, R.anim.pop_exit)
                 .replace(R.id.container, OptionsFragment()).commit()
+
         }
 
         try {
@@ -97,6 +99,8 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
         } catch (ex: ClassCastException) {
             Toast.makeText(requireActivity(), "Exception has occured...", Toast.LENGTH_LONG).show()
         }
+
+
 
     }
 

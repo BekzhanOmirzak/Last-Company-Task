@@ -9,8 +9,8 @@ import com.example.taskfromcompany.R
 import com.example.taskfromcompany.databinding.ActivityMenuBinding
 import com.example.taskfromcompany.viewmodel.InformationViewModel
 
-class MenuActivity : AppCompatActivity(), OptionsFragment.PassFragment,
-    PersonalInfFragment.MyOnBackPressed {
+class MenuActivity : AppCompatActivity(),
+PersonalInfFragment.MyOnBackPressed {
 
     private val TAG = "Menu"
     private lateinit var binding: ActivityMenuBinding
@@ -23,9 +23,7 @@ class MenuActivity : AppCompatActivity(), OptionsFragment.PassFragment,
         setContentView(binding.root)
         informationViewModel = ViewModelProvider(this).get(InformationViewModel::class.java)
         Log.i(TAG, "onCreate: code: ${informationViewModel.hashCode()}")
-        if (informationViewModel.fragment != null) {
-            showFragment(informationViewModel.fragment!!)
-        } else {
+        if (savedInstanceState == null) {
             showFragment(OptionsFragment())
         }
 
@@ -37,9 +35,6 @@ class MenuActivity : AppCompatActivity(), OptionsFragment.PassFragment,
             .commit()
     }
 
-    override fun onPassFragment(fragment: Fragment) {
-        informationViewModel.fragment = fragment
-    }
 
     override fun onBackPressed() {
         if (pressed) {

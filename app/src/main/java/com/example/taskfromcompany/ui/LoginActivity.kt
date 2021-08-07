@@ -29,10 +29,10 @@ class LoginActivity : AppCompatActivity() {
             Intent(this, MenuActivity::class.java).also {
                 startActivity(it)
             }
-        } else {
-            binding.appCompatButton.setOnClickListener {
-                loginViewModel.getApiTokenRest(20234561, "ladevi31")
-            }
+        }
+
+        binding.appCompatButton.setOnClickListener {
+            loginViewModel.getApiTokenRest(20234561, "ladevi31")
         }
 
         loginViewModel.returnLiveDataUserLoginIn().observe(this) {
