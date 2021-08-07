@@ -2,10 +2,7 @@ package com.example.taskfromcompany.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -36,6 +33,8 @@ class TradingFragment : Fragment(R.layout.currency_trading) {
     private lateinit var spinner: Spinner
     private lateinit var toolBar: Toolbar
     private lateinit var myOnBackPressed: PersonalInfFragment.MyOnBackPressed
+    private lateinit var progressBar: ProgressBar
+    private lateinit var txtNoResult: TextView
     private var from = 0
     private var to = 0
 
@@ -79,8 +78,11 @@ class TradingFragment : Fragment(R.layout.currency_trading) {
         txtFinishData = view.findViewById(R.id.txtTo)
         spinner = view.findViewById(R.id.spinner)
         toolBar = view.findViewById(R.id.tool_bar)
+        progressBar = view.findViewById(R.id.progress_bar)
         informationViewModel = ViewModelProvider(this).get(InformationViewModel::class.java)
+        txtNoResult = view.findViewById(R.id.txtNoResults)
         toolBar.title = ""
+        rec_view.visibility = View.GONE
         from = rangeSeek.values.get(0).toInt()
         to = rangeSeek.values.get(1).toInt()
     }
@@ -137,13 +139,24 @@ class TradingFragment : Fragment(R.layout.currency_trading) {
 
             when (it) {
                 is Resource.Error -> {
-
+                    progressBar.visibility = View.GONE
+                    txtNoResult.setText(it.message)
+                    txtNoResult.visibility = View.VISIBLE
                 }
                 is Resource.Loading -> {
-
+                    progressBar.visibility = View.VISIBLE
+                    rec_view.visibility = View.GONE
+                    txtNoResult.visibility = View.GONE
                 }
                 is Resource.Success -> {
-
+                    progressBar.visibility = View.GONE
+                    if (it.data?.size == 0) {
+                        txtNoResult.visibility = View.VISIBLE
+                    } else {
+                        rec_view.visibility = View.VISIBLE
+                        txtNoResult.visibility = View.GONE
+                        adapter.updateTradingItems(it.data!!)
+                    }
                 }
             }
 

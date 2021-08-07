@@ -21,9 +21,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/tool_bar"
-                android:padding="10dp"
-                android:layout_height="wrap_content">
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/txtpaircurrency"
@@ -121,14 +121,29 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rec_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/btnSearch"
         android:layout_marginTop="10dp"
+        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txtNoResults"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableEnd="@drawable/ic_baseline_mood_bad_24"
+        android:text="No Results   "
+        android:textSize="18sp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

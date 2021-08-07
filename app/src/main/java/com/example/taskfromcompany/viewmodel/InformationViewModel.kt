@@ -12,6 +12,7 @@ import com.example.taskfromcompany.remote.ServiceGenerator
 import com.example.taskfromcompany.util.Resource
 import com.example.taskfromcompany.util.TempDataStorage
 import kotlinx.coroutines.*
+import java.lang.Exception
 
 class InformationViewModel : ViewModel() {
 
@@ -19,13 +20,13 @@ class InformationViewModel : ViewModel() {
 
     val retrofitApiRest = ServiceGenerator.generateServiceRest()
     val retrofitApiUrl = ServiceGenerator.generateServiceUrl()
-    private val liveDataUserInformation = MutableLiveData<PersonalInformation?>()
+    private val liveDataUserInformation = MutableLiveData<Resource<PersonalInformation>>()
     private val liveDataListCurrencyTrading = MutableLiveData<Resource<List<CurrencyTrading>>>()
     private var job: Job? = null
     var fragment: Fragment? = null
 
 
-    fun returnPersonalInformation(): LiveData<PersonalInformation?> {
+    fun returnPersonalInformation(): LiveData<Resource<PersonalInformation>> {
         return liveDataUserInformation
     }
 
@@ -34,22 +35,29 @@ class InformationViewModel : ViewModel() {
     }
 
     fun startRequesting() {
-        liveDataUserInformation.postValue(null)
+        liveDataUserInformation.postValue(Resource.Loading(null))
         val user = TempDataStorage.getCurUser()!!
         viewModelScope.launch {
 
-            val callPersonal = retrofitApiRest.getPersonalInformation(user)
-            val callLastFour = retrofitApiRest.getLastFourNumber(user)
+            try {
 
-            if (callPersonal.isSuccessful && callLastFour.isSuccessful && callPersonal.code() == 200 && callLastFour.code() == 200) {
-                val personalInformation = callPersonal.body()!!
-                personalInformation.last_four = callLastFour.body()!!
-                withContext(Dispatchers.Main) {
-                    liveDataUserInformation.postValue(personalInformation)
+                val callPersonal = retrofitApiRest.getPersonalInformation(user)
+                val callLastFour = retrofitApiRest.getLastFourNumber(user)
+
+                if (callPersonal.isSuccessful && callLastFour.isSuccessful && callPersonal.code() == 200 && callLastFour.code() == 200) {
+                    val personalInformation = callPersonal.body()!!
+                    personalInformation.last_four = callLastFour.body()!!
+                    withContext(Dispatchers.Main) {
+                        liveDataUserInformation.postValue(Resource.Success(personalInformation))
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        liveDataUserInformation.postValue(Resource.Error("Error "))
+                    }
                 }
-            } else {
+            } catch (ex: Exception) {
                 withContext(Dispatchers.Main) {
-                    liveDataUserInformation.postValue(null)
+                    liveDataUserInformation.postValue(Resource.Error("Network TimeOut"))
                 }
             }
         }
@@ -60,16 +68,23 @@ class InformationViewModel : ViewModel() {
         liveDataListCurrencyTrading.postValue(Resource.Loading(null))
         val user = TempDataStorage.getCurUser()!!
         job = viewModelScope.launch {
-            val responseUrl =
-                retrofitApiUrl.getCurrentTrading(user.urlToken, user.login, 3, pair, from, to)
-            if (responseUrl.isSuccessful && responseUrl.code() == 200) {
-                withContext(Dispatchers.Main) {
-                    liveDataListCurrencyTrading.postValue(Resource.Success(responseUrl.body()!!))
-                    job?.cancel();
+            try {
+                val responseUrl =
+                    retrofitApiUrl.getCurrentTrading(user.urlToken, user.login, 3, pair, from, to)
+                if (responseUrl.isSuccessful && responseUrl.code() == 200) {
+                    withContext(Dispatchers.Main) {
+                        liveDataListCurrencyTrading.postValue(Resource.Success(responseUrl.body()!!))
+                        job?.cancel();
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        liveDataListCurrencyTrading.postValue(Resource.Error("Error "))
+                        job?.cancel()
+                    }
                 }
-            } else {
-                withContext(Dispatchers.Main) {
-                    liveDataListCurrencyTrading.postValue(Resource.Error("Failure"))
+            } catch (ex: Exception) {
+                withContext(Dispatchers.IO) {
+                    liveDataListCurrencyTrading.postValue(Resource.Error("Network TimeOut "))
                     job?.cancel()
                 }
             }

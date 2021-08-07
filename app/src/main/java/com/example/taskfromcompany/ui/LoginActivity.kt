@@ -1,12 +1,19 @@
 package com.example.taskfromcompany.ui
 
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.taskfromcompany.R
 import com.example.taskfromcompany.databinding.ActivityLoginBinding
@@ -53,8 +60,19 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         initHandlingInternet()
+        handlingColorForNotMember()
 
     }
+
+    private fun handlingColorForNotMember() {
+        val text = "Not a member?Sign Up"
+        val ss = SpannableString(text)
+        val fcsBlue =
+            ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.my_blue, null))
+        ss.setSpan(fcsBlue, 13, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        binding.txtSignUp.text = ss
+    }
+
 
     private fun initHandlingInternet() {
         connectionLiveData.observe(this) {

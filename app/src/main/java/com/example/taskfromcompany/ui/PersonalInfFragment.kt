@@ -1,6 +1,10 @@
 package com.example.taskfromcompany.ui
 
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
@@ -9,14 +13,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.taskfromcompany.R
 import com.example.taskfromcompany.model.PersonalInformation
-import com.example.taskfromcompany.util.TempDataStorage
+import com.example.taskfromcompany.util.Resource
 import com.example.taskfromcompany.viewmodel.InformationViewModel
-import java.lang.ClassCastException
+import org.w3c.dom.Text
 import kotlin.reflect.full.memberProperties
 
 
@@ -41,23 +47,63 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
 
     private fun initObservingPersonalInformation() {
         personalViewModel.returnPersonalInformation().observe(this) {
-            if (it != null) {
-                progressBar.visibility = View.GONE
-                showLinearLayout.visibility = View.VISIBLE
-                for (k in PersonalInformation::class.memberProperties) {
-                    val text = TextView(requireActivity())
+
+            when (it) {
+                is Resource.Success -> {
+                    progressBar.visibility = View.GONE
+                    showLinearLayout.visibility = View.VISIBLE
+                    for (k in PersonalInformation::class.memberProperties) {
+                        val text = TextView(requireActivity())
+                        text.setLayoutParams(
+                            LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                            )
+                        )
+
+                        var value = k.get(it.data!!)
+
+                        if (k.name.lowercase().equals("last_four")) {
+                            val str = value.toString()
+                            value = str.substring(str.length - 4, str.length)
+                        }
+
+                        val property =
+                            k.name.substring(0, 1).uppercase() + k.name.substring(1)
+                                .lowercase() + ":" + value
+                        val ss = SpannableString(property)
+                        val foreBold =
+                            ForegroundColorSpan(
+                                ResourcesCompat.getColor(
+                                    resources,
+                                    R.color.bright_black,
+                                    null
+                                )
+                            )
+
+                        ss.setSpan(foreBold, 0, k.name.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        text.text = ss
+                        text.textSize = 20.0f
+                        linearContainer.addView(text)
+                    }
+                }
+                is Resource.Error -> {
+                    val text = TextView(activity)
+                    text.text = it.message
                     text.setLayoutParams(
                         LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         )
                     )
-                    text.text = "${k.name}:${k.get(it)}"
-                    Log.i(TAG, "onViewCreated: ${text.text}")
-                    text.textSize = 20.0f
                     linearContainer.addView(text)
-                    Log.i(TAG, "onViewCreated: ${TempDataStorage.getCurUser()?.urlToken}")
+                    progressBar.visibility = View.GONE
                 }
+                is Resource.Loading -> {
+                    progressBar.visibility = View.VISIBLE
+                }
+
+
             }
         }
     }
