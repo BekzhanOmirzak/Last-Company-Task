@@ -11,7 +11,7 @@ import com.example.taskfromcompany.viewmodel.LoginPageViewModel
 
 class LoginActivity : AppCompatActivity() {
 
-   //This is just a testing
+
     private val TAG = "MainActivity"
 
     private lateinit var binding: ActivityLoginBinding
