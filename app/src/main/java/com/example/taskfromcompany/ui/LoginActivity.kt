@@ -21,11 +21,20 @@ import com.example.taskfromcompany.remote.ConnectionLiveData
 import com.example.taskfromcompany.util.Resource
 import com.example.taskfromcompany.util.TempDataStorage
 import com.example.taskfromcompany.viewmodel.LoginPageViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Exception
+import javax.inject.Inject
+import javax.inject.Named
 import kotlin.math.log
 
+
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
+
+    @Named("String 2")
+    @Inject
+    lateinit var str: String
 
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityLoginBinding
@@ -50,10 +59,20 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+
         binding.appCompatButton.setOnClickListener {
             handleButton()
         }
+        initObservingLoginInViewModel()
+        initHandlingInternet()
+        handlingColorForNotMember()
 
+
+        Log.i(TAG, "onCreate: provided $str ")
+
+    }
+
+    private fun initObservingLoginInViewModel() {
         loginViewModel.returnLiveDataUserLoginIn().observe(this) {
 
             when (it) {
@@ -78,9 +97,6 @@ class LoginActivity : AppCompatActivity() {
             }
 
         }
-        initHandlingInternet()
-        handlingColorForNotMember()
-
     }
 
     private fun handlingColorForNotMember() {

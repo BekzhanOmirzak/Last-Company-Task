@@ -6,13 +6,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".di.HiltApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TaskFromCompany">
-        <activity android:name=".ui.BaseActivity"></activity>
         <activity android:name=".ui.MenuActivity" />
         <activity android:name=".ui.LoginActivity">
             <intent-filter>

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Task from Company</string>
+    <string name="string_from_di">Provided string  from DI</string>
     <array name="currencies">
         <item>EURUSD</item>
         <item>GBPUSD</item>
