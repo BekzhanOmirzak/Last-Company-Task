@@ -5,21 +5,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.taskfromcompany.model.User
-import com.example.taskfromcompany.remote.ServiceGenerator
+import com.example.taskfromcompany.remote.RetrofitApi
 import com.example.taskfromcompany.util.Resource
 import com.example.taskfromcompany.util.TempDataStorage
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Named
 
-class LoginPageViewModel : ViewModel() {
+@HiltViewModel
+class LoginPageViewModel
+@Inject constructor(
+    @Named("rest_api") val retrofitApiRest: RetrofitApi,
+    @Named("url_api") val retrofitApiUrl: RetrofitApi
+) : ViewModel() {
 
     private val TAG = "LoginPageViewModel"
 
-    val retrofitApiRest = ServiceGenerator.generateServiceRest()
-    val retrofitApiUrl = ServiceGenerator.generateServiceUrl();
     private val apiTokenRestUrl = MutableLiveData<Resource<Boolean>>();
-
 
     fun returnLiveDataUserLoginIn(): LiveData<Resource<Boolean>> {
         return apiTokenRestUrl
@@ -45,15 +50,20 @@ class LoginPageViewModel : ViewModel() {
                 withContext(Dispatchers.Main) {
                     apiTokenRestUrl.postValue(Resource.Error("Error"))
                 }
+
             } else if (!callRest.isSuccessful || !callUrl.isSuccessful) {
                 withContext(Dispatchers.Main) {
                     apiTokenRestUrl.postValue(Resource.Loading(false))
                 }
+
             }
+
+
         }
 
 
     }
+
 
 
 }

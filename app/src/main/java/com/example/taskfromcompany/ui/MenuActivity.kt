@@ -3,6 +3,7 @@ package com.example.taskfromcompany.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,15 +14,16 @@ import com.example.taskfromcompany.util.Resource
 import com.example.taskfromcompany.util.TempDataStorage
 import com.example.taskfromcompany.viewmodel.InformationViewModel
 import com.example.taskfromcompany.viewmodel.LoginPageViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.net.ConnectException
 
+@AndroidEntryPoint
 class MenuActivity : AppCompatActivity(),
     PersonalInfFragment.MyOnBackPressed {
 
     private val TAG = "Menu"
     private lateinit var binding: ActivityMenuBinding
-    private lateinit var informationViewModel: InformationViewModel
-    private lateinit var loginPageViewModel: LoginPageViewModel
+    private val loginPageViewModel: LoginPageViewModel by viewModels()
     private var pressed = false
     private lateinit var connectLiveData: ConnectionLiveData
     var hasInternet = false
@@ -31,9 +33,6 @@ class MenuActivity : AppCompatActivity(),
         binding = ActivityMenuBinding.inflate(layoutInflater)
         connectLiveData = ConnectionLiveData(this)
         setContentView(binding.root)
-        informationViewModel = ViewModelProvider(this).get(InformationViewModel::class.java)
-        loginPageViewModel = ViewModelProvider(this).get(LoginPageViewModel::class.java)
-        Log.i(TAG, "onCreate: code: ${informationViewModel.hashCode()}")
         if (savedInstanceState == null) {
             showFragment(OptionsFragment())
         }
@@ -42,6 +41,7 @@ class MenuActivity : AppCompatActivity(),
         if (value != null) {
             initHandlingToGetToken()
         }
+
 
     }
 

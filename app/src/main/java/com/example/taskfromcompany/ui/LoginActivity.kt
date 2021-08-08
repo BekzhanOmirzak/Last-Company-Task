@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
@@ -32,13 +33,9 @@ import kotlin.math.log
 class LoginActivity : AppCompatActivity() {
 
 
-    @Named("String 2")
-    @Inject
-    lateinit var str: String
-
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var loginViewModel: LoginPageViewModel
+    private  val  loginViewModel: LoginPageViewModel by viewModels()
     private lateinit var connectionLiveData: ConnectionLiveData
     private var hasInternet = false
 
@@ -48,7 +45,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         connectionLiveData = ConnectionLiveData(this)
         TempDataStorage.initializeSharedPreferences(this)
-        loginViewModel = ViewModelProvider(this).get(LoginPageViewModel::class.java)
 
 
         val user = TempDataStorage.getCurUser()
@@ -68,7 +64,6 @@ class LoginActivity : AppCompatActivity() {
         handlingColorForNotMember()
 
 
-        Log.i(TAG, "onCreate: provided $str ")
 
     }
 

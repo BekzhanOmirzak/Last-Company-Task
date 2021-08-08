@@ -7,24 +7,30 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.taskfromcompany.model.CurrencyTrading
 import com.example.taskfromcompany.model.PersonalInformation
+import com.example.taskfromcompany.remote.RetrofitApi
 import com.example.taskfromcompany.remote.ServiceGenerator
 import com.example.taskfromcompany.util.Resource
 import com.example.taskfromcompany.util.TempDataStorage
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Named
 
-class InformationViewModel : ViewModel() {
+@HiltViewModel
+class InformationViewModel
+@Inject constructor(
+    @Named("rest_api") val retrofitApiRest: RetrofitApi,
+    @Named("url_api") val retrofitApiUrl: RetrofitApi
+) : ViewModel() {
 
     private val TAG = "InformationViewModel"
 
-    val retrofitApiRest = ServiceGenerator.generateServiceRest()
-    val retrofitApiUrl = ServiceGenerator.generateServiceUrl()
     private val liveDataUserInformation = MutableLiveData<Resource<PersonalInformation>>()
     private val liveDataListCurrencyTrading = MutableLiveData<Resource<List<CurrencyTrading>>>()
     private var job: Job? = null
-    var fragment: Fragment? = null
 
     fun returnPersonalInformation(): LiveData<Resource<PersonalInformation>> {
         return liveDataUserInformation
@@ -61,7 +67,6 @@ class InformationViewModel : ViewModel() {
                 }
             }
         }
-
     }
 
     fun startRequestingCurrency(pair: String, from: Int, to: Int) {
@@ -88,13 +93,7 @@ class InformationViewModel : ViewModel() {
                     job?.cancel()
                 }
             }
-
         }
-
     }
-
-
-
-
 
 }

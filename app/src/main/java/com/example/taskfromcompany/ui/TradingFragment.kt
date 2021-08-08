@@ -6,6 +6,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,15 +15,18 @@ import com.example.taskfromcompany.adapter.TradingAdapter
 import com.example.taskfromcompany.util.Resource
 import com.example.taskfromcompany.viewmodel.InformationViewModel
 import com.google.android.material.slider.RangeSlider
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ClassCastException
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+@AndroidEntryPoint
 class TradingFragment : Fragment(R.layout.currency_trading) {
 
     private val TAG = "TradingFragment"
 
-    private lateinit var informationViewModel: InformationViewModel
+    private val informationViewModel: InformationViewModel by viewModels()
 
     private lateinit var rec_view: RecyclerView
     private lateinit var btnSearch: Button
@@ -79,7 +83,6 @@ class TradingFragment : Fragment(R.layout.currency_trading) {
         spinner = view.findViewById(R.id.spinner)
         toolBar = view.findViewById(R.id.tool_bar)
         progressBar = view.findViewById(R.id.progress_bar)
-        informationViewModel = ViewModelProvider(this).get(InformationViewModel::class.java)
         txtNoResult = view.findViewById(R.id.txtNoResults)
         toolBar.title = ""
         rec_view.visibility = View.GONE

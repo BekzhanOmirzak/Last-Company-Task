@@ -10,19 +10,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.taskfromcompany.R
 import com.example.taskfromcompany.util.TempDataStorage
 import com.example.taskfromcompany.viewmodel.InformationViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class OptionsFragment : Fragment() {
 
     private lateinit var btn_personal: AppCompatButton
     private lateinit var btn_trading: AppCompatButton
-    private lateinit var informationViewModel: InformationViewModel
     private lateinit var toolBar: androidx.appcompat.widget.Toolbar
     private val TAG = "OptionsFragment"
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +47,6 @@ class OptionsFragment : Fragment() {
         btn_trading = view.findViewById(R.id.btn_trading)
         toolBar = view.findViewById(R.id.tool_bar)
         toolBar.title = ""
-        informationViewModel = ViewModelProvider(this).get(InformationViewModel::class.java)
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolBar)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

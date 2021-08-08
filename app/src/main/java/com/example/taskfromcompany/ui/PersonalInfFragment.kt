@@ -17,21 +17,24 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.taskfromcompany.R
 import com.example.taskfromcompany.model.PersonalInformation
 import com.example.taskfromcompany.util.Resource
 import com.example.taskfromcompany.viewmodel.InformationViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import org.w3c.dom.Text
 import kotlin.reflect.full.memberProperties
 
 
+@AndroidEntryPoint
 class PersonalInfFragment : Fragment(R.layout.personal_information) {
 
     private lateinit var progressBar: ProgressBar
     private lateinit var linearContainer: LinearLayout
     private lateinit var showLinearLayout: NestedScrollView
-    private lateinit var personalViewModel: InformationViewModel
+    private val personalViewModel: InformationViewModel by viewModels()
     private lateinit var myOnBackPressed: MyOnBackPressed
     private lateinit var tool_bar: Toolbar
     private val TAG = "PersonalInfFragment"
@@ -111,13 +114,10 @@ class PersonalInfFragment : Fragment(R.layout.personal_information) {
         progressBar = view.findViewById(R.id.progress_bar)
         linearContainer = view.findViewById(R.id.parent_linear)
         showLinearLayout = view.findViewById(R.id.scroll_view)
-        personalViewModel = ViewModelProvider(this).get(InformationViewModel::class.java)
         progressBar.visibility = View.VISIBLE
         showLinearLayout.visibility = View.GONE
         tool_bar = view.findViewById(R.id.tool_bar)
         tool_bar.title = ""
-
-        Log.i(TAG, "initProperties PersonalFragment: ${personalViewModel.hashCode()}")
 
     }
 
