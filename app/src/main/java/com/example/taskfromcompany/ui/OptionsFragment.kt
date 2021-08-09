@@ -105,6 +105,7 @@ class OptionsFragment : Fragment() {
         if (item.itemId == R.id.log_out) {
             TempDataStorage.saveUser(null)
             Intent(requireActivity(), LoginActivity::class.java).also {
+                it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 startActivity(it)
             }
             return true

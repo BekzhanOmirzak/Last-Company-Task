@@ -37,33 +37,9 @@ class MenuActivity : AppCompatActivity(),
             showFragment(OptionsFragment())
         }
         initHandlingInternetConnection()
-        val value = intent.getStringExtra("old")
-        if (value != null) {
-            initHandlingToGetToken()
-        }
-
 
     }
 
-    private fun initHandlingToGetToken() {
-        val user = TempDataStorage.getCurUser()!!
-        loginPageViewModel.getApiTokenRest(user.login, user.password)
-        loginPageViewModel.returnLiveDataUserLoginIn().observe(this) {
-            when (it) {
-
-                is Resource.Loading -> {
-                    binding.container.visibility = View.GONE
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-
-                is Resource.Success -> {
-                    binding.container.visibility = View.VISIBLE
-                    binding.progressBar.visibility = View.GONE
-                }
-
-            }
-        }
-    }
 
     private fun initHandlingInternetConnection() {
 

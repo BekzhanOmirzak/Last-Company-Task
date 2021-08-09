@@ -1,6 +1,5 @@
 package com.example.taskfromcompany.viewmodel
 
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.taskfromcompany.model.CurrencyTrading
 import com.example.taskfromcompany.model.PersonalInformation
 import com.example.taskfromcompany.remote.RetrofitApi
-import com.example.taskfromcompany.remote.ServiceGenerator
 import com.example.taskfromcompany.util.Resource
 import com.example.taskfromcompany.util.TempDataStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -89,11 +87,13 @@ class InformationViewModel
                 }
             } catch (ex: Exception) {
                 withContext(Dispatchers.IO) {
-                    liveDataListCurrencyTrading.postValue(Resource.Error("Network TimeOut "))
+                    liveDataListCurrencyTrading.postValue(Resource.Error("Network TimeOut"))
                     job?.cancel()
                 }
             }
         }
     }
+
+
 
 }

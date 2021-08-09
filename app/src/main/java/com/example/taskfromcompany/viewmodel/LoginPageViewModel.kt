@@ -30,7 +30,6 @@ class LoginPageViewModel
         return apiTokenRestUrl
     }
 
-
     fun getApiTokenRest(login: Int, password: String) {
         apiTokenRestUrl.postValue(Resource.Loading(false))
         val user = User(login, password)
@@ -58,9 +57,7 @@ class LoginPageViewModel
 
             }
 
-
         }
-
 
     }
 

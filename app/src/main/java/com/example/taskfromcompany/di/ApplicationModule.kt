@@ -1,7 +1,6 @@
 package com.example.taskfromcompany.di
 
 import com.example.taskfromcompany.remote.RetrofitApi
-import com.example.taskfromcompany.remote.ServiceGenerator
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides

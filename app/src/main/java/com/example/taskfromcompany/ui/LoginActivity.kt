@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityLoginBinding
-    private  val  loginViewModel: LoginPageViewModel by viewModels()
+    private val loginViewModel: LoginPageViewModel by viewModels()
     private lateinit var connectionLiveData: ConnectionLiveData
     private var hasInternet = false
 
@@ -50,7 +50,6 @@ class LoginActivity : AppCompatActivity() {
         val user = TempDataStorage.getCurUser()
         if (user != null) {
             Intent(this, MenuActivity::class.java).also {
-                it.putExtra("old", "old")
                 startActivity(it)
             }
         }
@@ -62,7 +61,6 @@ class LoginActivity : AppCompatActivity() {
         initObservingLoginInViewModel()
         initHandlingInternet()
         handlingColorForNotMember()
-
 
 
     }
@@ -143,6 +141,10 @@ class LoginActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun clearBackStack(){
+
     }
 
 
